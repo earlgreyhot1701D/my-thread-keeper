@@ -22,6 +22,8 @@ export const AddInsightModal = ({ projectId, snapshots, onInsightAdded, children
   const [open, setOpen] = useState(false);
   const { toast } = useToast();
 
+  console.log('AddInsightModal rendered with projectId:', projectId);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
