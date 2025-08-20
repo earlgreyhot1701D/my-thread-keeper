@@ -6,8 +6,9 @@ import { Card } from '@/components/ui/card';
 import { TimelineItem } from '@/components/TimelineItem';
 import { AddSnapshotForm } from '@/components/AddSnapshotForm';
 import { AddInsightForm } from '@/components/AddInsightForm';
+import { EditableProjectHeader } from '@/components/EditableProjectHeader';
 import { Project, Snapshot, Insight, TimelineItem as TimelineItemType } from '@/types';
-import { getProjects, getSnapshots, getInsights } from '@/lib/storage';
+import { getProjects, getSnapshots, getInsights, saveProject } from '@/lib/storage';
 import { ArrowLeft, Target, Calendar, Lightbulb, Code2 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 
@@ -52,6 +53,11 @@ export const ProjectPage = () => {
     setInsights(prev => [insight, ...prev]);
   };
 
+  const handleProjectUpdate = (updatedProject: Project) => {
+    saveProject(updatedProject);
+    setProject(updatedProject);
+  };
+
   if (!project) {
     return <div>Loading...</div>;
   }
@@ -70,9 +76,10 @@ export const ProjectPage = () => {
           </Button>
           
           <div className="space-y-4">
-            <h1 className="text-3xl font-bold text-foreground">
-              {project.title}
-            </h1>
+            <EditableProjectHeader 
+              project={project} 
+              onProjectUpdate={handleProjectUpdate}
+            />
             
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
               <div className="flex items-center gap-1">

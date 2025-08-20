@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Lightbulb } from 'lucide-react';
 import { Insight, Snapshot } from '@/types';
 import { generateId, saveInsight } from '@/lib/storage';
+import { useToast } from '@/hooks/use-toast';
 
 interface AddInsightFormProps {
   projectId: string;
@@ -18,6 +19,7 @@ export const AddInsightForm = ({ projectId, snapshots, onInsightAdded }: AddInsi
   const [content, setContent] = useState('');
   const [relatedSnapshotId, setRelatedSnapshotId] = useState<string>('');
   const [isExpanded, setIsExpanded] = useState(false);
+  const { toast } = useToast();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,6 +36,11 @@ export const AddInsightForm = ({ projectId, snapshots, onInsightAdded }: AddInsi
 
     saveInsight(newInsight);
     onInsightAdded(newInsight);
+    
+    toast({
+      title: "Insight saved!",
+      description: "Your insight has been added to the timeline.",
+    });
     
     setContent('');
     setRelatedSnapshotId('');

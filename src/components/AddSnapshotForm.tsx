@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Code2, Tag } from 'lucide-react';
 import { Snapshot } from '@/types';
 import { generateId, saveSnapshot } from '@/lib/storage';
+import { useToast } from '@/hooks/use-toast';
 
 interface AddSnapshotFormProps {
   projectId: string;
@@ -17,6 +18,7 @@ export const AddSnapshotForm = ({ projectId, onSnapshotAdded }: AddSnapshotFormP
   const [content, setContent] = useState('');
   const [tagsInput, setTagsInput] = useState('');
   const [isExpanded, setIsExpanded] = useState(false);
+  const { toast } = useToast();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,6 +40,11 @@ export const AddSnapshotForm = ({ projectId, onSnapshotAdded }: AddSnapshotFormP
 
     saveSnapshot(newSnapshot);
     onSnapshotAdded(newSnapshot);
+    
+    toast({
+      title: "Snapshot saved!",
+      description: "Your code snapshot has been added to the timeline.",
+    });
     
     setContent('');
     setTagsInput('');
