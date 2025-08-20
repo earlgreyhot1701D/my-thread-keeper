@@ -14,31 +14,60 @@ import { ArrowLeft, Target, Calendar, Lightbulb, Code2 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 
 export const ProjectPage = () => {
+  console.log('=== ProjectPage component starting to render ===');
+  
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  
+  console.log('ProjectPage - useParams id:', id);
+  console.log('ProjectPage - typeof id:', typeof id);
+  
   const [project, setProject] = useState<Project | null>(null);
   const [snapshots, setSnapshots] = useState<Snapshot[]>([]);
   const [insights, setInsights] = useState<Insight[]>([]);
   const [timelineItems, setTimelineItems] = useState<TimelineItemType[]>([]);
 
-  console.log('ProjectPage rendered with id:', id);
-  console.log('Current snapshots:', snapshots.length);
-  console.log('Current insights:', insights.length);
+  console.log('ProjectPage - State initialized');
+  console.log('ProjectPage - project state:', project);
+  console.log('ProjectPage - snapshots length:', snapshots.length);
+  console.log('ProjectPage - insights length:', insights.length);
 
   useEffect(() => {
-    if (!id) return;
+    console.log('=== ProjectPage useEffect triggered ===');
+    console.log('useEffect - id:', id);
+    
+    if (!id) {
+      console.log('useEffect - No id found, returning early');
+      return;
+    }
 
+    console.log('useEffect - Getting projects from storage...');
     const projects = getProjects();
+    console.log('useEffect - All projects:', projects);
+    
     const foundProject = projects.find(p => p.id === id);
+    console.log('useEffect - Found project:', foundProject);
     
     if (!foundProject) {
+      console.log('useEffect - Project not found, navigating to home');
       navigate('/');
       return;
     }
 
+    console.log('useEffect - Setting project state...');
     setProject(foundProject);
-    setSnapshots(getSnapshots(id));
-    setInsights(getInsights(id));
+    
+    console.log('useEffect - Getting snapshots...');
+    const projectSnapshots = getSnapshots(id);
+    console.log('useEffect - Project snapshots:', projectSnapshots);
+    setSnapshots(projectSnapshots);
+    
+    console.log('useEffect - Getting insights...');
+    const projectInsights = getInsights(id);
+    console.log('useEffect - Project insights:', projectInsights);
+    setInsights(projectInsights);
+    
+    console.log('=== ProjectPage useEffect completed ===');
   }, [id, navigate]);
 
   useEffect(() => {
@@ -63,9 +92,15 @@ export const ProjectPage = () => {
     setProject(updatedProject);
   };
 
+  console.log('ProjectPage - About to check if project exists');
+  console.log('ProjectPage - project state before render:', project);
+  
   if (!project) {
+    console.log('ProjectPage - No project found, showing loading...');
     return <div>Loading...</div>;
   }
+  
+  console.log('ProjectPage - Project found, rendering main content');
 
   return (
     <div className="min-h-screen bg-background">
