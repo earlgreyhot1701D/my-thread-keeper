@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { TimelineItem } from '@/components/TimelineItem';
 import { AddSnapshotForm } from '@/components/AddSnapshotForm';
-import { AddInsightForm } from '@/components/AddInsightForm';
+import { AddInsightModal } from '@/components/AddInsightModal';
 import { EditableProjectHeader } from '@/components/EditableProjectHeader';
 import { Project, Snapshot, Insight, TimelineItem as TimelineItemType } from '@/types';
 import { getProjects, getSnapshots, getInsights, saveProject } from '@/lib/storage';
@@ -116,11 +116,18 @@ export const ProjectPage = () => {
           <TabsContent value="timeline" className="space-y-4">
             <div className="grid gap-4 lg:grid-cols-2">
               <AddSnapshotForm projectId={project.id} onSnapshotAdded={handleSnapshotAdded} />
-              <AddInsightForm 
+              <AddInsightModal 
                 projectId={project.id} 
                 snapshots={snapshots}
-                onInsightAdded={handleInsightAdded} 
-              />
+                onInsightAdded={handleInsightAdded}
+              >
+                <Button className="w-full h-auto p-4 bg-gradient-card border-dashed border-warm-orange/30 hover:border-warm-orange/50 transition-colors">
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <Lightbulb className="w-4 h-4" />
+                    <span>Log an insight...</span>
+                  </div>
+                </Button>
+              </AddInsightModal>
             </div>
             
             {timelineItems.length === 0 ? (
@@ -158,11 +165,18 @@ export const ProjectPage = () => {
           </TabsContent>
 
           <TabsContent value="insights" className="space-y-4">
-            <AddInsightForm 
+            <AddInsightModal 
               projectId={project.id} 
               snapshots={snapshots}
-              onInsightAdded={handleInsightAdded} 
-            />
+              onInsightAdded={handleInsightAdded}
+            >
+              <Button className="w-full h-auto p-4 bg-gradient-card border-dashed border-warm-orange/30 hover:border-warm-orange/50 transition-colors">
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Lightbulb className="w-4 h-4" />
+                  <span>Log an insight...</span>
+                </div>
+              </Button>
+            </AddInsightModal>
             
             {insights.length === 0 ? (
               <Card className="p-8 text-center bg-gradient-card">
