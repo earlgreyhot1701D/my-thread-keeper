@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -19,6 +20,10 @@ export const ProjectPage = () => {
   const [snapshots, setSnapshots] = useState<Snapshot[]>([]);
   const [insights, setInsights] = useState<Insight[]>([]);
   const [timelineItems, setTimelineItems] = useState<TimelineItemType[]>([]);
+
+  console.log('ProjectPage rendered with id:', id);
+  console.log('Current snapshots:', snapshots.length);
+  console.log('Current insights:', insights.length);
 
   useEffect(() => {
     if (!id) return;
